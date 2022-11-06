@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import az.khayalsharifli.rickandmorty.base.BaseViewModel
 import az.khayalsharifli.rickandmorty.data.CharacterRepository
 import az.khayalsharifli.rickandmorty.model.CharacterResult
@@ -24,28 +25,28 @@ class HomeViewModel(
 
     fun getAllData() {
         viewModelScope.launch {
-            _response.value = repository.getPagingData()
+            _response.value = repository.getPagingData().cachedIn(viewModelScope)
         }
     }
 
     fun getDataByName(name: String) {
         viewModelScope.launch {
             _response.value = emptyFlow()
-            _response.value = repository.getCharactersByName(name)
+            _response.value = repository.getCharactersByName(name).cachedIn(viewModelScope)
         }
     }
 
     fun getDataByGender(gender: String) {
         viewModelScope.launch {
             _response.value = emptyFlow()
-            _response.value = repository.getCharactersByGender(gender)
+            _response.value = repository.getCharactersByGender(gender).cachedIn(viewModelScope)
         }
     }
 
     fun getDataByStatus(status: String) {
         viewModelScope.launch {
             _response.value = emptyFlow()
-            _response.value = repository.getCharactersByStatus(status)
+            _response.value = repository.getCharactersByStatus(status).cachedIn(viewModelScope)
         }
     }
 
