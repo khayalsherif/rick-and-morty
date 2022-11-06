@@ -11,7 +11,6 @@ import az.khayalsharifli.rickandmorty.R
 import az.khayalsharifli.rickandmorty.base.BaseFragment
 import az.khayalsharifli.rickandmorty.custom_view.RefreshView
 import az.khayalsharifli.rickandmorty.databinding.FragmentHomeBinding
-import az.khayalsharifli.rickandmorty.model.CharacterResult
 import az.khayalsharifli.rickandmorty.tools.ClickListener
 import az.khayalsharifli.rickandmorty.tools.DialogSelectedClickListener
 import az.khayalsharifli.rickandmorty.ui.adapter.CharacterAdapter
@@ -30,8 +29,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(), ClickLi
 
     private val characterAdapter by lazy { CharacterAdapter(this) }
 
-    private val resultList = ArrayList<CharacterResult>()
-
     override val bindViews: FragmentHomeBinding.() -> Unit = {
         configurationRecyclerView()
         loadData()
@@ -43,6 +40,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(), ClickLi
             dialog.show(childFragmentManager, "dialog")
         }
 
+        searchView.setOnClickListener {
+            searchView.isIconified = false
+        }
     }
 
     private fun configurationRecyclerView() {
@@ -57,11 +57,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(), ClickLi
 
     private fun loadData() {
         viewModel.response.observe(viewLifecycleOwner) {
-            lifecycleScope.launch {
+            viewLifecycleOwner.lifecycleScope.launch {
                 it.collect { data ->
                     binding.refreshLayout.refreshComplete(true)
-                    characterAdapter.submitData(data)
-                    resultList.clear()
+                    characterAdapter.submitData(viewLifecycleOwner.lifecycle, data)
                 }
             }
         }
