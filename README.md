@@ -1,5 +1,8 @@
 # Rick And Morty 
 
+| <img src="images/image1.png"> | <img src="images/image2.png"> | <img src="images/image3.png"> |
+|-------------------------------|-------------------------------|-------------------------------|
+
 ## - Built With 🛠
 - [Kotlin](https://kotlinlang.org/) - First class and official programming language for Android development.
 - [Android Architecture Components](https://developer.android.com/topic/libraries/architecture) - Collection of libraries that help you design robust, testable, and maintainable apps.
